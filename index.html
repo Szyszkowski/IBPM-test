@@ -8,8 +8,65 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<div class="container content">
+    <div class="row">
+        <div class="col-xs-12 col-md-4 form">
+            <form class="form-horizontal" data-toggle="validator" id="form" action="http://jfdd.infoshareaca.nazwa.pl/mailer.php" method="POST">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"> Type*</label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="typeSelect" name="type" required>
+                            <option value="church">Churches</option>
+                            <option value="stadium">Stadiums</option>
+                            <option value="school">Schools</option>
+                            <option value="police">Police</option>
+                            <option value="park">Parks</option>
+                            <option value="store">Stores</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDistance" class="col-sm-4 control-label">Distance*</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="1" max="50" name="distance" class="form-control" id="inputDistance" placeholder="value in kilometers" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-4 control-label">Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="name" class="form-control" id="inputName" placeholder="name of place to serach">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"> Comment</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" name="receiver" value="szysza0x@gmail.com">
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button type="submit" class="btn btn-default">Show</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-8 map" id="map">
+        </div>
+    </div>
+    <div class="row dataFromApi">
+        <div class="col-xs-12">
+            asdasdasd
+        </div>
+    </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAq8Hm7vBezOyn9TQ-TDVHqlfrRF9wXF18&libraries=places&callback=initMap"
+        async defer></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap-validator/dist/validator.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="scripts/main.js"></script>
 </body>
 </html>

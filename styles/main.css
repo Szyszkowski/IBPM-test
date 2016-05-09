@@ -1,0 +1,12 @@
+.map {
+    background-color: blue;
+    height: 500px;
+}
+
+form {
+    margin-top: 50px;
+}
+
+.dataFromApi {
+    background-color: yellow;
+}
