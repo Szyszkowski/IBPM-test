@@ -7,6 +7,8 @@ form {
     margin-top: 50px;
 }
 
-.dataFromApi {
-    background-color: yellow;
+#pagination {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }

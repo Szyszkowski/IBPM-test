@@ -11,9 +11,10 @@
 <div class="container content">
     <div class="row">
         <div class="col-xs-12 col-md-4 form">
-            <form class="form-horizontal" data-toggle="validator" id="form" action="http://jfdd.infoshareaca.nazwa.pl/mailer.php" method="POST">
+            <form class="form-horizontal" data-toggle="validator" id="form"
+                  action="http://jfdd.infoshareaca.nazwa.pl/mailer.php" method="POST">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label"> Type*</label>
+                    <label class="col-md-4 control-label"> Type*</label>
                     <div class="col-md-8">
                         <select class="form-control" id="typeSelect" name="type" required>
                             <option value="church">Churches</option>
@@ -26,28 +27,31 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputDistance" class="col-sm-4 control-label">Distance*</label>
-                    <div class="col-sm-8">
-                        <input type="number" min="1" max="50" name="distance" class="form-control" id="inputDistance" placeholder="value in kilometers" required>
+                    <label for="inputDistance" class="col-md-4 control-label">Distance*</label>
+                    <div class="col-md-8">
+                        <input type="number" min="1" max="50" name="distance" class="form-control" id="inputDistance"
+                               placeholder="value in kilometers" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-4 control-label">Name</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" id="inputName" placeholder="name of place to serach">
+                    <label for="inputName" class="col-md-4 control-label">Name</label>
+                    <div class="col-md-8">
+                        <input type="text" name="name" class="form-control" id="inputName"
+                               placeholder="name of place to serach">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label"> Comment</label>
-                    <div class="col-sm-8">
+                    <label class="col-md-4 control-label"> Comment</label>
+                    <div class="col-md-8">
                         <textarea class="form-control" rows="3"></textarea>
                     </div>
                 </div>
                 <input type="hidden" name="receiver" value="szysza0x@gmail.com">
                 <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
+                    <div class="col-md-offset-4 col-md-8">
                         <button type="submit" class="btn btn-default">Show</button>
+                        <button id="more" class="btn btn-default" disabled>More results</button>
                     </div>
                 </div>
             </form>
@@ -55,10 +59,23 @@
         <div class="col-xs-12 col-md-8 map" id="map">
         </div>
     </div>
-    <div class="row dataFromApi">
-        <div class="col-xs-12">
-            asdasdasd
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Panel heading</div>
+            <table class="table" id="tableData">
+                <tr>
+                    <td>#</td>
+                    <td>Name</td>
+                    <td>Address</td>
+                </tr>
+            </table>
         </div>
+        <ul class="pagination" id="pagination">
+            <!--<li><a href="#">Prev</a></li>-->
+
+
+            <!--<li><a href="#">Next</a></li>-->
+        </ul>
     </div>
 </div>
 
