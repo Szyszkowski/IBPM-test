@@ -102,7 +102,6 @@ function createMarker(place) {
 // Funkcja umożliwiająca paginację wyników w formie tabeli. W przypadku dużej liczby danych, zwiększa ilość rekordów wyświetlanych w pojedyńczym widoku.
 
 function showPage(page) {
-  places.length < 50 ? pages = 5 : places.length < 100 ? pages = 10 : pages = 15;
   var row = '';
   places.slice(pages * page - pages, pages * page).forEach(function (val, ind) {
     row += '<tr id="' + (ind + 1 + (page - 1) * pages - 1) + '"><td>' + (ind + 1 + (page - 1) * pages) + '</td><td>' + val.name + '</td><td>' + val.vicinity + '</td></tr>';
@@ -115,6 +114,7 @@ function showPage(page) {
 }
 // Funckja tworząca buttony i kontrolująca tabele.
 function navPagination() {
+  places.length < 50 ? pages = 5 : places.length < 100 ? pages = 10 : pages = 15;
   var row = '';
   for (var i = 1; i < places.length / pages + 1; i++) {
     row += '<li><a href="">' + i + '</a></li>';
