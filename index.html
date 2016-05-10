@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="bootstrap-data-table-master/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="bootstrap-data-table-master/css/jquery.bdt.min.css">
 </head>
+
 <body>
 <div class="container panel panel-primary">
     <div class="panel-heading row"><h3>What are you looking for?</h3></div>
     <div class="row">
-        <div class="col-xs-12 col-md-4 form ">
-            <form class="form-horizontal" data-toggle="validator" id="form"
-                  action="http://jfdd.infoshareaca.nazwa.pl/mailer.php" method="POST">
+        <div class="col-xs-12 col-md-4">
+            <form class="form-horizontal" data-toggle="validator" id="form">
                 <div class="form-group">
                     <label class="col-md-4 control-label"> Type*</label>
                     <div class="col-md-8">
@@ -28,6 +28,10 @@
                             <option value="police">Police</option>
                             <option value="park">Parks</option>
                             <option value="store">Stores</option>
+                            <option value="hospital">Hospitals</option>
+                            <option value="parking">Parkings</option>
+                            <option value="bus_station">Bus stations</option>
+                            <option value="restaurant">Restaurants</option>
                         </select>
                     </div>
                 </div>
@@ -44,15 +48,15 @@
                     <div class="col-md-8">
                         <input type="text" name="name" class="form-control" id="inputName" pattern="[A-Za-z0-9 ]{3,20}"
                                data-error="From 3 to 20 characters, letters and numbers only"
-                               placeholder="name of place to search">
+                               placeholder="name of place">
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label"> Keywords</label>
-                    <div class="col-md-8">
-                        <textarea class="form-control" name="keywords" rows="1"></textarea>
-                    </div>
+                        <label class="col-md-8">
+                        <textarea class="form-control" name="keywords" rows="2" placeholder="you can put one or more words"></textarea>
+                        </label>
                 </div>
                 <div class="form-group">
                     <label class="col-md-4 control-label"> Open now</label>
@@ -80,10 +84,19 @@
             <h5>Sorry, but nothing matched your search terms. Try one more time.</h5>
         </div>
         <div class="alert alert-danger hide messages" role="alert" id="alert2">
-            <h5>Sorry, we're having some technical issues. Try one more time.</h5>
+            <h5>Sorry, we're having some technical issues. Wait ot try one more time.</h5>
         </div>
         <div class="hide" id="table">
-            <table class="table table-striped" id="tableData"></table>
+            <table class="table table-striped" id="tableData">
+                <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
             <div>
                 <ul class="pagination" id="pagination"></ul>
             </div>

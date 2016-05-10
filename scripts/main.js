@@ -6,17 +6,32 @@ var infowindow;
 var pyrmont;
 var markers = [];
 var places = [];
+var pages;
+var helpArray = [];
 
+// Inicjalizacja mapy.
 function initMap() {
   pyrmont = new google.maps.LatLng(54.372755, 18.635715);
   map = new google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
     zoom: 11
   });
+  // Utworzenie markera w pozycji centralnej, według którego odbywało będzie się filtrowanie.
+  var marker = new google.maps.Marker({
+    map: map,
+    draggable: true,
+    animation: google.maps.Animation.DROP,
+    position: pyrmont,
+    icon: 'http://ruralshores.com/assets/marker-icon.png'
+  });
 }
-
+// Funkcja, która wysyła zapytanie do API na podstawie danych dostarczonych w formularzu.
 function update(form) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
   places = [];
+  helpArray = [];
   infowindow = new google.maps.InfoWindow();
   var service = new google.maps.places.PlacesService(map);
   service.nearbySearch({
@@ -29,15 +44,25 @@ function update(form) {
   }, processResults);
 }
 
+// Funkcja wykonywana po uzyskaniu odpowiedzi z API.
 function processResults(results, status, pagination) {
-  console.log(status);
-  $('.messages').addClass('hide')
+  var check = helpArray.slice();
+  $('.messages').addClass('hide');
+  //W przypadku gdy status odpowiedzi jest poprawny, sprawdzam czy pobrane dane nie dublują obecnie posiadanych,
+  //następnie tworzona jest tablica pomocnicza w której zapisywane są ID zabytków (w celu sprawdzenia dubli),
+  //dalej pobrane miejsca zapisywane są w tablicy na której podstawie generowana jest tabela z informacjami o miejscach.
+  //Ostatecznie na podstwie pobranych danych wywoływana jest funkcja tworząca markery.
   if (status === 'OK') {
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
-    }
-    createMarkers(results);
-    if (pagination.hasNextPage) {
+    results.forEach(function (val, ind) {
+      if (helpArray.indexOf(val.id) < 0) {
+        helpArray.push(val.id);
+        places.push(val);
+        createMarker(val);
+      }
+    });
+    // Każdorazowo pobranych zostaje maksymlanie 20 obiektów, jeżeli jest ich więcej uaktywnia się button,
+    // który umożliwia pobranie kolejnych obiektów spełniającyh kryteria zapytania.
+    if (pagination.hasNextPage && places.length < 300 && check.length !== helpArray.length) {
       var moreButton = document.getElementById('more');
       moreButton.disabled = false;
       moreButton.addEventListener('click', function () {
@@ -45,50 +70,52 @@ function processResults(results, status, pagination) {
         pagination.nextPage();
       });
     }
-  } else if (status === 'ZERO_RESULTS') {
+  }
+  // Jeżeli kryteria wyszukiwania są zbyt rygorystyczne i nie zwróca żadnych wyników, jesteśmy o tym informowani odpowiednim komunikatem.
+  else if (status === 'ZERO_RESULTS') {
     $('#alert').removeClass('hide');
-    return;
-  } else if (status !== 'OVER_QUERY_LIMIT'){
+  }
+  // Jeżeli status odpowiedzi z serwera jest negatywny zostajemy również poinformowani o tym.
+  else if (status !== 'OVER_QUERY_LIMIT') {
     $('#alert2').removeClass('hide')
   }
 }
+// Funkcja odpowiedzialna za tworzenie markerów.
+function createMarker(place) {
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location,
+    animation: google.maps.Animation.DROP
+  });
 
-function createMarkers(place) {
-  for (var i = 0; i < place.length; i++) {
-    var placeLoc = place[i].geometry.location;
-    var marker = new google.maps.Marker({
-      map: map,
-      position: place[i].geometry.location
-    });
-    markers.push(marker);
-    places.push(place[i]);
-    google.maps.event.addListener(marker, 'click', function () {
-      infowindow.setContent(place[i].name);
-      infowindow.open(map, this);
-    });
-  }
+  markers.push(marker);
+  google.maps.event.addListener(marker, 'click', function () {
+    map.setZoom(14);
+    map.setCenter(marker.getPosition());
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+
   navPagination();
 }
+// Funkcja umożliwiająca paginację wyników w formie tabeli. W przypadku dużej liczby danych, zwiększa ilość rekordów wyświetlanych w pojedyńczym widoku.
 
 function showPage(page) {
-  var row = '<tr><td>#</td><td>Name</td><td>Address</td></tr>';
-  places.slice(5 * page - 5, 5 * page).forEach(function (val, ind) {
-    row += '<tr><td>' + (ind + 1 + (page - 1) * 5) + '</td><td>' + val.name + '</td><td>' + val.vicinity + '</td></tr>';
-  });
-  $('#tableData').html(row);
-  $('#table').removeClass('hide');
-}
-
-function navPagination() {
-  var row = '<tr><td>#</td><td>Name</td><td>Address</td></tr>';
-  places.forEach(function (val, ind) {
-    row += '<tr><td>' + (ind + 1) + '</td><td>' + val.name + '</td><td>' + val.vicinity + '</td></tr>';
-  });
-
-  $('#tableData').html(row);
-  $('#table').removeClass('hide');
+  places.length < 50 ? pages = 5 : places.length < 100 ? pages = 10 : pages = 15;
   var row = '';
-  for (var i = 1; i < places.length / 5 + 1; i++) {
+  places.slice(pages * page - pages, pages * page).forEach(function (val, ind) {
+    row += '<tr id="' + (ind + 1 + (page - 1) * pages - 1) + '"><td>' + (ind + 1 + (page - 1) * pages) + '</td><td>' + val.name + '</td><td>' + val.vicinity + '</td></tr>';
+  });
+  $('tbody').html(row);
+  $('#table').removeClass('hide');
+  $('tr').click(function (e) {
+    google.maps.event.trigger(markers[e.currentTarget.id], 'click', {});
+  })
+}
+// Funckja tworząca buttony i kontrolująca tabele.
+function navPagination() {
+  var row = '';
+  for (var i = 1; i < places.length / pages + 1; i++) {
     row += '<li><a href="">' + i + '</a></li>';
   }
 
@@ -101,13 +128,12 @@ function navPagination() {
   });
 
   showPage(1);
-
 }
 
 $('#form').validator().on('submit', function (e) {
   if (e.isDefaultPrevented()) {
-    // handle the invalid form...
-  } else {
+  }
+  else {
     update(this);
     return false
   }
