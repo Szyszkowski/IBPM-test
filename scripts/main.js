@@ -30,6 +30,7 @@ function update(form) {
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
+  markers = [];
   places = [];
   helpArray = [];
   infowindow = new google.maps.InfoWindow();
