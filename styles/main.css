@@ -1,14 +1,41 @@
-.map {
-    background-color: blue;
-    height: 500px;
-}
-
 form {
     margin-top: 50px;
 }
 
-#pagination {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+.map {
+    background-color: blue;
+    height: 390px;
 }
+
+.bottomSection {
+    padding: 20px;
+}
+
+
+#pagination {
+    padding: 0 10px;
+}
+
+@media (max-width: 991px) {
+    .map {
+        max-height: 60vh;
+    }
+}
+tr:first-child {
+    background-color: #3988CC !important;
+    font-weight: bold;
+    color: white;
+}
+
+td:nth-child(1) {
+    width: 3%;
+}
+
+td:nth-child(2) {
+    width: 62%;
+}
+
+td:nth-child(3) {
+    width: 35%;
+}
+

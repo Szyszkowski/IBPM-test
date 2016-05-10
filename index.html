@@ -2,15 +2,20 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1">
     <title>IBPM-test</title>
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-data-table-master/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap-data-table-master/css/jquery.bdt.min.css">
 </head>
 <body>
-<div class="container content">
+<div class="container panel panel-primary">
+    <div class="panel-heading row"><h3>What are you looking for?</h3></div>
     <div class="row">
-        <div class="col-xs-12 col-md-4 form">
+        <div class="col-xs-12 col-md-4 form ">
             <form class="form-horizontal" data-toggle="validator" id="form"
                   action="http://jfdd.infoshareaca.nazwa.pl/mailer.php" method="POST">
                 <div class="form-group">
@@ -27,27 +32,38 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputDistance" class="col-md-4 control-label">Distance*</label>
+                    <label for="inputDistance" class="col-md-4 control-label">Distance(km)*</label>
                     <div class="col-md-8">
                         <input type="number" min="1" max="50" name="distance" class="form-control" id="inputDistance"
-                               placeholder="value in kilometers" required>
+                               placeholder="number from 1 to 50" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputName" class="col-md-4 control-label">Name</label>
                     <div class="col-md-8">
-                        <input type="text" name="name" class="form-control" id="inputName"
-                               placeholder="name of place to serach">
+                        <input type="text" name="name" class="form-control" id="inputName" pattern="[A-Za-z0-9 ]{3,20}"
+                               data-error="From 3 to 20 characters, letters and numbers only"
+                               placeholder="name of place to search">
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-4 control-label"> Comment</label>
+                    <label class="col-md-4 control-label"> Keywords</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea class="form-control" name="keywords" rows="1"></textarea>
                     </div>
                 </div>
-                <input type="hidden" name="receiver" value="szysza0x@gmail.com">
+                <div class="form-group">
+                    <label class="col-md-4 control-label"> Open now</label>
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="open"> Yes
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-4 col-md-8">
                         <button type="submit" class="btn btn-default">Show</button>
@@ -59,23 +75,19 @@
         <div class="col-xs-12 col-md-8 map" id="map">
         </div>
     </div>
-    <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">Panel heading</div>
-            <table class="table" id="tableData">
-                <tr>
-                    <td>#</td>
-                    <td>Name</td>
-                    <td>Address</td>
-                </tr>
-            </table>
+    <div class="row bottomSection">
+        <div class="alert alert-danger hide messages" role="alert" id="alert">
+            <h5>Sorry, but nothing matched your search terms. Try one more time.</h5>
         </div>
-        <ul class="pagination" id="pagination">
-            <!--<li><a href="#">Prev</a></li>-->
-
-
-            <!--<li><a href="#">Next</a></li>-->
-        </ul>
+        <div class="alert alert-danger hide messages" role="alert" id="alert2">
+            <h5>Sorry, we're having some technical issues. Try one more time.</h5>
+        </div>
+        <div class="hide" id="table">
+            <table class="table table-striped" id="tableData"></table>
+            <div>
+                <ul class="pagination" id="pagination"></ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -84,6 +96,8 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap-validator/dist/validator.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bootstrap-data-table-master/js/vendor/jquery.sortelements.js"></script>
+<script src="bootstrap-data-table-master/js/jquery.bdt.min.js"></script>
 <script src="scripts/main.js"></script>
 </body>
 </html>
